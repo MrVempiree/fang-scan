@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fang-scan — Security Headers Checker</title>
+  <meta name="description" content="fang-scan audits HTTP security headers (HSTS, CSP, cookies and more) entirely in your browser. Paste raw response headers and get a graded report with fixes.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <img class="banner" src="assets/banner.svg" alt="fang-scan — security headers checker">
+  </header>
+
+  <main class="layout">
+    <section class="card glass input-card" aria-labelledby="input-heading">
+      <h1 id="input-heading" class="visually-hidden">fang-scan — security headers checker</h1>
+      <p class="lede">
+        Paste raw HTTP response headers and fang-scan grades them A–F, flagging
+        missing or weak protections with a concrete fix for each one.
+      </p>
+
+      <label class="input-label" for="headers-input">Raw response headers</label>
+      <textarea id="headers-input" rows="12" spellcheck="false" autocomplete="off"
+        placeholder="HTTP/2 200&#10;strict-transport-security: max-age=63072000; includeSubDomains&#10;content-security-policy: default-src 'self'&#10;…"></textarea>
+
+      <div class="actions">
+        <button id="audit-btn" type="button" class="btn btn-primary">Audit headers</button>
+        <button id="sample-weak-btn" type="button" class="btn">Load weak sample</button>
+        <button id="sample-strong-btn" type="button" class="btn">Load strong sample</button>
+        <button id="clear-btn" type="button" class="btn btn-ghost">Clear</button>
+      </div>
+
+      <details class="howto">
+        <summary>How do I get a site's headers?</summary>
+        <p>Run this in a terminal and paste the output above:</p>
+        <pre><code>curl -sI https://example.com</code></pre>
+        <p>Or open your browser DevTools → Network tab → select the document request → copy the response headers.</p>
+      </details>
+
+      <p class="privacy">
+        Private by design: everything runs in your browser — headers are never uploaded, stored, or sent anywhere.
+      </p>
+    </section>
+
+    <section id="results" class="results" aria-live="polite" hidden>
+      <div class="card glass score-card">
+        <div id="score-ring" class="score-ring" data-grade="F">
+          <div class="score-ring-inner">
+            <span id="grade-letter" class="grade-letter">F</span>
+            <span class="score-line"><span id="score-value">0</span><span class="score-max">/100</span></span>
+          </div>
+        </div>
+        <div class="score-meta">
+          <h2 class="score-title">Overall grade</h2>
+          <p id="grade-note" class="grade-note"></p>
+          <div id="summary-chips" class="summary-chips"></div>
+          <p id="parsed-count" class="parsed-count"></p>
+        </div>
+      </div>
+
+      <div id="findings-list" class="findings-list"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>fang-scan by Lavish Gangwar (Vempire) — sink your teeth into weak security headers.</p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
